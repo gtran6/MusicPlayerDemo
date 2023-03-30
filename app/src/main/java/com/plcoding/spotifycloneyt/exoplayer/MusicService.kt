@@ -1,5 +1,6 @@
 package com.plcoding.spotifycloneyt.exoplayer
 
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
@@ -57,6 +58,7 @@ class MusicService : MediaBrowserServiceCompat() {
             private set
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     override fun onCreate() {
         super.onCreate()
         serviceScope.launch {

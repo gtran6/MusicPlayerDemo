@@ -6,13 +6,13 @@ apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 33
+    compileSdkVersion 30
     buildToolsVersion "29.0.3"
 
     defaultConfig {
         applicationId "com.plcoding.spotifycloneyt"
         minSdkVersion 21
-        targetSdkVersion 33
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -98,4 +98,7 @@ dependencies {
     api "com.google.android.exoplayer:exoplayer-core:2.11.8"
     api "com.google.android.exoplayer:exoplayer-ui:2.11.8"
     api "com.google.android.exoplayer:extension-mediasession:2.11.8"
+
+    // required to avoid crash on Android 12 API 31
+    implementation 'androidx.work:work-runtime-ktx:2.7.0'
 }
