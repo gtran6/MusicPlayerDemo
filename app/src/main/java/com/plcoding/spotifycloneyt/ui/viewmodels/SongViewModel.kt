@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.plcoding.spotifycloneyt.exoplayer.MusicService
 import com.plcoding.spotifycloneyt.exoplayer.MusicServiceConnection
 import com.plcoding.spotifycloneyt.exoplayer.currentPlaybackPosition
-import com.plcoding.spotifycloneyt.other.Constants.UPDATE_PLAYER_POSITION_INTERNAL
+import com.plcoding.spotifycloneyt.other.Constants.UPDATE_PLAYER_POSITION_INTERVAL
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -22,7 +22,7 @@ class SongViewModel @ViewModelInject constructor(
     val currSongDuration: LiveData<Long> = _currSongDuration
 
     private val _currPlayerPosition = MutableLiveData<Long>()
-    val  currPlayerPosition: LiveData<Long> = _currPlayerPosition
+    val currPlayerPosition: LiveData<Long> = _currPlayerPosition
 
     init {
         updateCurrentPlayerPosition()
@@ -30,14 +30,13 @@ class SongViewModel @ViewModelInject constructor(
 
     private fun updateCurrentPlayerPosition() {
         viewModelScope.launch {
-            while (true) {
-                val position = playbackState.value?.currentPlaybackPosition
-
-                if (currPlayerPosition.value != position) {
-                    _currPlayerPosition.postValue(position)
+            while(true) {
+                val pos = playbackState.value?.currentPlaybackPosition
+                if(currPlayerPosition.value != pos) {
+                    _currPlayerPosition.postValue(pos)
                     _currSongDuration.postValue(MusicService.currSongDuration)
                 }
-                delay(UPDATE_PLAYER_POSITION_INTERNAL)
+                delay(UPDATE_PLAYER_POSITION_INTERVAL)
             }
         }
     }

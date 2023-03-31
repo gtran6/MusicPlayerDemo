@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.plcoding.spotifycloneyt.data.entity.Song
 
 abstract class BaseSongAdapter(
-    private val layoutID: Int
+    private val layoutId: Int
 ) : RecyclerView.Adapter<BaseSongAdapter.SongViewHolder>() {
 
     class SongViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
@@ -24,7 +24,7 @@ abstract class BaseSongAdapter(
         }
     }
 
-    protected abstract var differ: AsyncListDiffer<Song>
+    protected abstract val differ: AsyncListDiffer<Song>
 
     var songs: List<Song>
         get() = differ.currentList
@@ -33,7 +33,7 @@ abstract class BaseSongAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         return SongViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                layoutID,
+                layoutId,
                 parent,
                 false
             )

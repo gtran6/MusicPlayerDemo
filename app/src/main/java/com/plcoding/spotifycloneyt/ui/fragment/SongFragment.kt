@@ -29,39 +29,39 @@ class SongFragment : Fragment(R.layout.fragment_song) {
 
     private lateinit var mainViewModel: MainViewModel
     private val songViewModel: SongViewModel by viewModels()
-    private var currPlayingSong: Song? = null
+
+    private var curPlayingSong: Song? = null
 
     private var playbackState: PlaybackStateCompat? = null
 
-    private var shouldUpdateSeekBar = true
+    private var shouldUpdateSeekbar = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // called ViewModelProvider instead of viewModels() because this viewmodel binds to the activity's lifecycle, not fragment's lifecycle
         mainViewModel = ViewModelProvider(requireActivity()).get(MainViewModel::class.java)
         subscribeToObservers()
 
         ivPlayPauseDetail.setOnClickListener {
-            currPlayingSong?.let {
+            curPlayingSong?.let {
                 mainViewModel.playOrToggleSong(it, true)
             }
         }
 
         seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    setCurrPlayerTimeToTextview(progress.toLong())
+                if(fromUser) {
+                    setCurPlayerTimeToTextView(progress.toLong())
                 }
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
-                shouldUpdateSeekBar = false
+                shouldUpdateSeekbar = false
             }
 
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
                 seekBar?.let {
                     mainViewModel.seekTo(it.progress.toLong())
-                    shouldUpdateSeekBar = true
+                    shouldUpdateSeekbar = true
                 }
             }
         })
@@ -83,12 +83,12 @@ class SongFragment : Fragment(R.layout.fragment_song) {
 
     private fun subscribeToObservers() {
         mainViewModel.mediaItems.observe(viewLifecycleOwner) {
-            it?.let {  result ->
-                when (result.status) {
+            it?.let { result ->
+                when(result.status) {
                     SUCCESS -> {
-                        result.data?.let {  songs ->
-                            if (currPlayingSong == null && songs.isNotEmpty()) {
-                                currPlayingSong = songs[0]
+                        result.data?.let { songs ->
+                            if(curPlayingSong == null && songs.isNotEmpty()) {
+                                curPlayingSong = songs[0]
                                 updateTitleAndSongImage(songs[0])
                             }
                         }
@@ -98,21 +98,21 @@ class SongFragment : Fragment(R.layout.fragment_song) {
             }
         }
         mainViewModel.currPlayingSong.observe(viewLifecycleOwner) {
-            if (it == null) return@observe
-            currPlayingSong = it.toSong()
-            updateTitleAndSongImage(currPlayingSong!!)
+            if(it == null) return@observe
+            curPlayingSong = it.toSong()
+            updateTitleAndSongImage(curPlayingSong!!)
         }
         mainViewModel.playbackState.observe(viewLifecycleOwner) {
             playbackState = it
             ivPlayPauseDetail.setImageResource(
-                if (playbackState?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play
+                if(playbackState?.isPlaying == true) R.drawable.ic_pause else R.drawable.ic_play
             )
             seekBar.progress = it?.position?.toInt() ?: 0
         }
         songViewModel.currPlayerPosition.observe(viewLifecycleOwner) {
-            if (shouldUpdateSeekBar) {
+            if(shouldUpdateSeekbar) {
                 seekBar.progress = it.toInt()
-                setCurrPlayerTimeToTextview(it)
+                setCurPlayerTimeToTextView(it)
             }
         }
         songViewModel.currSongDuration.observe(viewLifecycleOwner) {
@@ -122,7 +122,7 @@ class SongFragment : Fragment(R.layout.fragment_song) {
         }
     }
 
-    private fun setCurrPlayerTimeToTextview(ms: Long) {
+    private fun setCurPlayerTimeToTextView(ms: Long) {
         val dateFormat = SimpleDateFormat("mm:ss", Locale.getDefault())
         tvCurTime.text = dateFormat.format(ms)
     }

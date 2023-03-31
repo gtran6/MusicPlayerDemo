@@ -20,7 +20,7 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideMusicConnectioin(
+    fun provideMusicConnection(
         @ApplicationContext context: Context
     ) = MusicServiceConnection(context)
 

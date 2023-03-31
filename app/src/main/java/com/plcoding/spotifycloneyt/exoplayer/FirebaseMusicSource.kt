@@ -17,14 +17,14 @@ import javax.inject.Inject
 
 class FirebaseMusicSource @Inject constructor(
     private val musicDatabase: MusicDatabase
-) {
+){
 
     var songs = emptyList<MediaMetadataCompat>()
 
     suspend fun fetchMediaData() = withContext(Dispatchers.IO) {
         state = STATE_INITIALIZING
         val allSongs = musicDatabase.getAllSongs()
-        songs = allSongs.map {  song ->
+        songs = allSongs.map { song ->
             MediaMetadataCompat.Builder()
                 .putString(METADATA_KEY_ARTIST, song.subtitle)
                 .putString(METADATA_KEY_MEDIA_ID, song.mediaID)
@@ -42,7 +42,7 @@ class FirebaseMusicSource @Inject constructor(
 
     fun asMediaSource(dataSourceFactory: DefaultDataSourceFactory): ConcatenatingMediaSource {
         val concatenatingMediaSource = ConcatenatingMediaSource()
-        songs.forEach {  song ->
+        songs.forEach { song ->
             val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(song.getString(METADATA_KEY_MEDIA_URI).toUri())
             concatenatingMediaSource.addMediaSource(mediaSource)
@@ -50,7 +50,7 @@ class FirebaseMusicSource @Inject constructor(
         return concatenatingMediaSource
     }
 
-    fun asMediaItems() = songs.map {  song ->
+    fun asMediaItems() = songs.map { song ->
         val desc = MediaDescriptionCompat.Builder()
             .setMediaUri(song.getString(METADATA_KEY_MEDIA_URI).toUri())
             .setTitle(song.description.title)
@@ -65,10 +65,10 @@ class FirebaseMusicSource @Inject constructor(
 
     private var state: State = STATE_CREATED
         set(value) {
-            if (value == STATE_INITIALIZED || value == STATE_ERROR) {
+            if(value == STATE_INITIALIZED || value == STATE_ERROR) {
                 synchronized(onReadyListeners) {
                     field = value
-                    onReadyListeners.forEach {  listener ->
+                    onReadyListeners.forEach { listener ->
                         listener(state == STATE_INITIALIZED)
                     }
                 }
@@ -77,8 +77,8 @@ class FirebaseMusicSource @Inject constructor(
             }
         }
 
-    fun whenReady(action: (Boolean) -> Unit) : Boolean {
-        if (state == STATE_CREATED || state == STATE_INITIALIZING) {
+    fun whenReady(action: (Boolean) -> Unit): Boolean {
+        if(state == STATE_CREATED || state == STATE_INITIALIZING) {
             onReadyListeners += action
             return false
         } else {
@@ -88,7 +88,7 @@ class FirebaseMusicSource @Inject constructor(
     }
 }
 
-enum class State{
+enum class State {
     STATE_CREATED,
     STATE_INITIALIZING,
     STATE_INITIALIZED,

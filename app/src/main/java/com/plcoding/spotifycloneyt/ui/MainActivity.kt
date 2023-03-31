@@ -9,7 +9,9 @@ import com.plcoding.spotifycloneyt.R
 import com.plcoding.spotifycloneyt.adapter.SwipeSongAdapter
 import com.plcoding.spotifycloneyt.data.entity.Song
 import com.plcoding.spotifycloneyt.exoplayer.toSong
-import com.plcoding.spotifycloneyt.other.Status
+import com.plcoding.spotifycloneyt.other.Status.SUCCESS
+import com.plcoding.spotifycloneyt.other.Status.ERROR
+import com.plcoding.spotifycloneyt.other.Status.LOADING
 import com.plcoding.spotifycloneyt.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.mediaItems.observe(this) {
             it?.let {  result ->
                 when (result.status) {
-                    Status.SUCCESS -> {
+                    SUCCESS -> {
                         result.data.let {  songs ->
                             swipeSongAdapter.songs = songs!!
                             if (songs.isNotEmpty()) {
@@ -58,8 +60,8 @@ class MainActivity : AppCompatActivity() {
                             switchViewPagerToCurrentSong(currPlayingSong ?: return@observe)
                         }
                     }
-                    Status.ERROR -> Unit
-                    Status.LOADING -> Unit
+                    ERROR -> Unit
+                    LOADING -> Unit
                 }
             }
         }

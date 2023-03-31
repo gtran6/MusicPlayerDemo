@@ -1,6 +1,5 @@
 package com.plcoding.spotifycloneyt.exoplayer
 
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
@@ -45,7 +44,7 @@ class MusicService : MediaBrowserServiceCompat() {
     private lateinit var mediaSession: MediaSessionCompat
     private lateinit var mediaSessionConnector: MediaSessionConnector
 
-    var isForeGroundService = false
+    var isForegroundService = false
 
     private var currPlayingSong: MediaMetadataCompat? = null
 
@@ -58,7 +57,6 @@ class MusicService : MediaBrowserServiceCompat() {
             private set
     }
 
-    @SuppressLint("UnspecifiedImmutableFlag")
     override fun onCreate() {
         super.onCreate()
         serviceScope.launch {
@@ -114,9 +112,9 @@ class MusicService : MediaBrowserServiceCompat() {
         itemToPlay: MediaMetadataCompat?,
         playNow: Boolean
     ) {
-        val currSongIndex = if (currPlayingSong == null) 0 else songs.indexOf(itemToPlay)
+        val curSongIndex = if(currPlayingSong == null) 0 else songs.indexOf(itemToPlay)
         exoPlayer.prepare(firebaseMusicSource.asMediaSource(dataSourceFactory))
-        exoPlayer.seekTo(currSongIndex, 0L)
+        exoPlayer.seekTo(curSongIndex, 0L)
         exoPlayer.playWhenReady = playNow
     }
 
@@ -145,12 +143,12 @@ class MusicService : MediaBrowserServiceCompat() {
         parentId: String,
         result: Result<MutableList<MediaBrowserCompat.MediaItem>>
     ) {
-        when (parentId) {
+        when(parentId) {
             MEDIA_ROOT_ID -> {
                 val resultsSent = firebaseMusicSource.whenReady { isInitialized ->
-                    if (isInitialized) {
+                    if(isInitialized) {
                         result.sendResult(firebaseMusicSource.asMediaItems())
-                        if (!isPlayerInitialized && firebaseMusicSource.songs.isNotEmpty()) {
+                        if(!isPlayerInitialized && firebaseMusicSource.songs.isNotEmpty()) {
                             preparePlayer(firebaseMusicSource.songs, firebaseMusicSource.songs[0], false)
                             isPlayerInitialized = true
                         }
@@ -159,7 +157,7 @@ class MusicService : MediaBrowserServiceCompat() {
                         result.sendResult(null)
                     }
                 }
-                if (!resultsSent) {
+                if(!resultsSent) {
                     result.detach()
                 }
             }

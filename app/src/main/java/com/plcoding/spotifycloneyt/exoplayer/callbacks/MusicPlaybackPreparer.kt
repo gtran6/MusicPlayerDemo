@@ -38,9 +38,7 @@ class MusicPlaybackPreparer(
         }
     }
 
-    override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle?) {
-        TODO("Not yet implemented")
-    }
+    override fun onPrepareFromSearch(query: String, playWhenReady: Boolean, extras: Bundle?) = Unit
 
     override fun onPrepareFromUri(uri: Uri, playWhenReady: Boolean, extras: Bundle?) = Unit
 }

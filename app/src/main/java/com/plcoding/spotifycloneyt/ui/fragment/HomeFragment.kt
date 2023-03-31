@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.plcoding.spotifycloneyt.R
 import com.plcoding.spotifycloneyt.adapter.SongAdapter
-import com.plcoding.spotifycloneyt.other.Status
+import com.plcoding.spotifycloneyt.other.Status.SUCCESS
+import com.plcoding.spotifycloneyt.other.Status.ERROR
+import com.plcoding.spotifycloneyt.other.Status.LOADING
 import com.plcoding.spotifycloneyt.ui.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -41,16 +43,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun subscribeToObservers() {
         mainViewModel.mediaItems.observe(viewLifecycleOwner) { result ->
             when (result.status) {
-                Status.SUCCESS -> {
+                SUCCESS -> {
                     allSongsProgressBar.isVisible = false
                     result.data.let {  songs ->
                         songAdapter.songs = songs!!
                     }
                 }
-                Status.ERROR -> {
+                ERROR -> {
 
                 }
-                Status.LOADING -> {
+                LOADING -> {
                     allSongsProgressBar.isVisible = true
                 }
             }
