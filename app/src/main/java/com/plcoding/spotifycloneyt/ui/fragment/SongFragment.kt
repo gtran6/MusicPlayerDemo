@@ -30,7 +30,7 @@ class SongFragment : Fragment(R.layout.fragment_song) {
     private lateinit var mainViewModel: MainViewModel
     private val songViewModel: SongViewModel by viewModels()
 
-    private var curPlayingSong: Song? = null
+    private var currPlayingSong: Song? = null
 
     private var playbackState: PlaybackStateCompat? = null
 
@@ -42,7 +42,7 @@ class SongFragment : Fragment(R.layout.fragment_song) {
         subscribeToObservers()
 
         ivPlayPauseDetail.setOnClickListener {
-            curPlayingSong?.let {
+            currPlayingSong?.let {
                 mainViewModel.playOrToggleSong(it, true)
             }
         }
@@ -87,8 +87,8 @@ class SongFragment : Fragment(R.layout.fragment_song) {
                 when(result.status) {
                     SUCCESS -> {
                         result.data?.let { songs ->
-                            if(curPlayingSong == null && songs.isNotEmpty()) {
-                                curPlayingSong = songs[0]
+                            if(currPlayingSong == null && songs.isNotEmpty()) {
+                                currPlayingSong = songs[0]
                                 updateTitleAndSongImage(songs[0])
                             }
                         }
@@ -99,8 +99,8 @@ class SongFragment : Fragment(R.layout.fragment_song) {
         }
         mainViewModel.currPlayingSong.observe(viewLifecycleOwner) {
             if(it == null) return@observe
-            curPlayingSong = it.toSong()
-            updateTitleAndSongImage(curPlayingSong!!)
+            currPlayingSong = it.toSong()
+            updateTitleAndSongImage(currPlayingSong!!)
         }
         mainViewModel.playbackState.observe(viewLifecycleOwner) {
             playbackState = it
