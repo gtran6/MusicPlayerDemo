@@ -7,6 +7,7 @@ MyMusicPlayer is a music player application written in Kotlin. It allows users t
 ### Tech Stacks
 - Kotlin
 - MVVM architecture
+- Navigation Component
 - Firebase Cloud Store
 
 ### Features
