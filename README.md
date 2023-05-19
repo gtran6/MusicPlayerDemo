@@ -21,6 +21,3 @@ MyMusicPlayer is a music player application written in Kotlin. It allows users t
 
 ### Phone Display
 <img src="https://user-images.githubusercontent.com/78507684/232851088-367c28dd-8355-4299-9f17-e32212f7579c.png" width="30%" height="30%">&ensp;<img src="https://user-images.githubusercontent.com/78507684/232851806-1bd73123-ae6e-43d4-8c3e-dfae5da9b82e.png" width="30%" height="30%">&ensp;<img src="https://user-images.githubusercontent.com/78507684/232852200-619d5e36-6afa-4a5f-acc9-e8600af54536.png" width="30%" height="30%">
-
-### Developed By
-Giang Tran
